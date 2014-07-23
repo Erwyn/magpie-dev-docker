@@ -1,25 +1,19 @@
+# Docker Magpie For Development
+
 FROM ubuntu
 
+MAINTAINER Martin Goyot (Erwyn) <martin@piwany.com>
+
+# Update apt-get metadatas
 RUN apt-get update
-RUN apt-get install python-pip -y
-RUN apt-get install python-bcrypt -y
-RUN apt-get install git -y
-RUN apt-get install supervisor -y
 
-RUN git clone https://github.com/charlesthomas/magpie.git /root/magpie
+# Install dependencies needed to build Magpie
+RUN apt-get install -y build-essential python2.7 python2.7-dev python-pip git
 RUN pip install filemagic
-RUN cd /root/magpie && pip install -r requirements.txt
 
-VOLUME ["/magpie"]
-
-ADD supervisord.conf /etc/supervisord.conf
-
-ADD deploy-magpie.sh /root/deploy-magpie.sh
+VOLUME ["/data/magpie","/usr/share/magpie"]
 ADD start.sh /root/start.sh
-RUN /bin/chmod +x /root/deploy-magpie.sh
-RUN /bin/chmod +x /root/start.sh
-
-RUN touch /root/magpie.log
+RUN chmod u+x /root/start.sh
 
 EXPOSE 8080
 CMD /root/start.sh

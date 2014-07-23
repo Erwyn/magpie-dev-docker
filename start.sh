@@ -1,4 +1,4 @@
 #!/bin/bash
 
-supervisord -c /etc/supervisord.conf
-tail -f /root/magpie.log
+pip install -e /usr/share/magpie
+magpie
